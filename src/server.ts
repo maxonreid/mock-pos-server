@@ -162,13 +162,14 @@ app.post("/orders", async (req, reply) => {
     ).map((i: any) => ({
       name: i.name || i.item_name || i.itemName || i.product_name || i.title || "Item",
       quantity: i.quantity || i.qty || 1,
-      price: i.price || i.unit_price || i.itemPrice || i.sku_price || 0,
+      price: i.price || i.unit_price || (i.unitPrice && i.unitPrice / 100) || i.itemPrice || i.sku_price || 0,
     })),
     total:
       body.total_amount ||
       body.order_total ||
       body.orderValue ||
       body.pricing?.grand_total ||
+      (body.total && body.total / 100) ||
       body.payment?.charges?.total?.amount / 100 ||
       0,
     customerNote:
