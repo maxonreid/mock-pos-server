@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="refresh" content="4" />
+  <title>BridgePOS — Orders Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #1a2744;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .header-brand-icon {
+      width: 28px;
+      height: 28px;
+      background: #f59e0b;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .header-version {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      font-weight: 400;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #4ade80;
+      background: rgba(74,222,128,0.1);
+      border: 1px solid rgba(74,222,128,0.25);
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .header-outlet {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── Main ── */
+    .main { flex: 1; padding: 28px 32px; }
+
+    /* ── Page header ── */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .page-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .today-count {
+      font-size: 13px;
+      color: #64748b;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+    .today-count strong { color: #0f172a; }
+
+    /* ── Refresh notice ── */
+    .refresh-notice {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    /* ── Table ── */
+    .table-wrap {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .table-head {
+      display: grid;
+      grid-template-columns: 140px 130px 1fr 90px 90px 110px;
+      padding: 10px 20px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .th {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+    .order-row {
+      display: grid;
+      grid-template-columns: 140px 130px 1fr 90px 90px 110px;
+      padding: 14px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      align-items: center;
+    }
+    .order-row:last-child { border-bottom: none; }
+    .order-row:hover { background: #f8fafc; }
+    .order-new { background: #fffbeb !important; }
+    .order-new:hover { background: #fef3c7 !important; }
+
+    .order-id {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      color: #1e293b;
+      font-weight: 600;
+    }
+    .order-source { font-size: 13px; color: #475569; }
+    .order-items {
+      font-size: 12px;
+      color: #64748b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 16px;
+    }
+    .order-total { font-family: monospace; font-size: 13px; color: #1e293b; font-weight: 600; }
+    .order-time  { font-family: monospace; font-size: 12px; color: #94a3b8; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .status-new {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    .status-received {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 56px 0;
+    }
+    .empty-icon  { font-size: 36px; opacity: 0.25; }
+    .empty-title { font-size: 15px; color: #94a3b8; font-weight: 500; }
+    .empty-sub   { font-size: 12px; color: #cbd5e1; }
+
+    /* ── Page footer ── */
+    .page-footer {
+      padding: 14px 32px;
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-brand">
+      <div class="header-brand-icon">🖨</div>
+      BridgePOS
+      <span class="header-version">v4.2.1</span>
+    </div>
+    <div class="header-right">
+      <span class="header-outlet">The Bridge Kitchen</span>
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        LIVE
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Incoming Orders</h1>
+      <div class="today-count">Today: <strong>{{todayCount}}</strong></div>
+    </div>
+
+    <div class="refresh-notice">↻ Auto-refreshing every 4 seconds</div>
+
+    <div class="table-wrap">
+      <div class="table-head">
+        <div class="th">POS Order ID</div>
+        <div class="th">Platform</div>
+        <div class="th">Items</div>
+        <div class="th">Total</div>
+        <div class="th">Time</div>
+        <div class="th">Status</div>
+      </div>
+
+      {{#if hasOrders}}
+        {{#each orders}}
+          <div class="order-row {{#if isNew}}order-new{{/if}}">
+            <div class="order-id">{{posOrderId}}</div>
+            <div class="order-source">{{platformLabel}}</div>
+            <div class="order-items">{{itemSummary}}</div>
+            <div class="order-total">${{totalFormatted}}</div>
+            <div class="order-time">{{timeFormatted}}</div>
+            <div class="order-status">
+              {{#if isNew}}
+                <span class="status-badge status-new">● NEW</span>
+              {{else}}
+                <span class="status-badge status-received">✓ RECEIVED</span>
+              {{/if}}
+            </div>
+          </div>
+        {{/each}}
+      {{else}}
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <div class="empty-title">No orders yet</div>
+          <div class="empty-sub">Waiting for incoming delivery orders via OrderBridge</div>
+        </div>
+      {{/if}}
+
+    </div>
+  </main>
+
+  <div class="page-footer">
+    Powered by BridgePOS API v4.2 &nbsp;·&nbsp; outlet: OUTLET-001 &nbsp;·&nbsp; © 2025 BridgePOS Systems
+  </div>
+
+</body>
+</html>

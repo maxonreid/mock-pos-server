@@ -1,0 +1,22 @@
+{
+  "name": "orderbridge-mock-pos",
+  "version": "1.0.0",
+  "description": "Mock POS server for OrderBridge demo — OAuth + order injection",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/view": "^9.0.0",
+    "fastify": "^4.26.0",
+    "handlebars": "^4.7.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}
