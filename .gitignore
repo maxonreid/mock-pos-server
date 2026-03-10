@@ -32,7 +32,8 @@ coverage/
 # ------------------------------
 # Build outputs
 # ------------------------------
-dist/
+dist/*
+!dist/server.js
 build/
 out/
 .next/
