@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import view from "@fastify/view";
 import formbody from "@fastify/formbody";
+import fastifyStatic from "@fastify/static";
 import Handlebars from "handlebars";
 import crypto from "crypto";
 import path from "path";
@@ -10,6 +11,11 @@ const app = Fastify({ logger: false });
 // ─── Plugins ──────────────────────────────────────────────────────────────────
 
 app.register(formbody);
+
+app.register(fastifyStatic, {
+  root: path.join(__dirname, "../public"),
+  prefix: "/public/",
+});
 
 // ─── Handlebars setup ─────────────────────────────────────────────────────────
 

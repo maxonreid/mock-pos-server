@@ -100,7 +100,13 @@
       flex-shrink: 0;
       border: 1.5px solid #e2e8f0;
     }
-    .app-icon-pos { background: #1a2744; font-size: 20px; }
+    .app-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 6px;
+    }
+    .app-icon-pos { background: #fff; font-size: 20px; }
     .app-icon-ob  { background: #0A0F1E; }
     .connector-line {
       flex: 1;
@@ -243,10 +249,10 @@
   <header class="header">
     <div class="header-brand">
       <div class="header-brand-icon">🖨</div>
-      BridgePOS
-      <span class="header-version">v4.2.1</span>
+      MockPOS
+      <span class="header-version">v0.2.1</span>
     </div>
-    <div class="header-user">demo@bridgepos.com</div>
+    <div class="header-user">hello@MaxonTorres.com</div>
   </header>
 
   <main class="main">
@@ -254,16 +260,22 @@
 
       <div class="card-top">
         <div class="connecting-row">
-          <div class="app-icon app-icon-ob">⚡</div>
+          <div class="app-icon app-icon-ob">
+            {{!-- OrderBridge logo image avatar circular --}}
+            <img src="/public/orderbridge-logo.svg" alt="OrderBridge">
+          </div>
           <div class="connector-line">
             <span class="connector-arrow">▶</span>
           </div>
-          <div class="app-icon app-icon-pos">🖨</div>
+          <div class="app-icon app-icon-pos">
+            {{!-- This apps logo --}}
+            <img src="/public/phing-kai-logo.png" alt="MockPOS">
+          </div>
         </div>
         <h1 class="card-title">Authorize OrderBridge</h1>
         <p class="card-subtitle">
           <strong>OrderBridge</strong> is requesting access to your
-          BridgePOS account at <strong>The Bridge Kitchen</strong>
+          MockPOS account at <strong>Phing Kai Kitchen</strong>
         </p>
       </div>
 
@@ -300,11 +312,11 @@
       <div class="meta">
         <div>
           <div class="meta-label">Outlet</div>
-          <div class="meta-value">The Bridge Kitchen</div>
+          <div class="meta-value">Phing Kai Kitchen</div>
         </div>
         <div>
           <div class="meta-label">Account</div>
-          <div class="meta-value">demo@bridgepos.com</div>
+          <div class="meta-value">hello@MaxonTorres.com</div>
         </div>
         <div>
           <div class="meta-label">Application</div>
@@ -332,14 +344,14 @@
 
       <div class="card-footer">
         By allowing access you agree to the
-        <a href="#">BridgePOS API Terms of Service</a>
+        <a href="#">MockPOS API Terms of Service</a>
       </div>
 
     </div>
   </main>
 
   <div class="page-footer">
-    Powered by BridgePOS API v4.2 &nbsp;·&nbsp; outlet: OUTLET-001 &nbsp;·&nbsp; © 2025 BridgePOS Systems
+    MockPOS Simulation Platform &nbsp;·&nbsp; Designed & Built by <a href="https://www.maxontorres.com/en" target="_blank">Maxon Torres</a> 
   </div>
 
 </body>
